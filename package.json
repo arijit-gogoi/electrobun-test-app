@@ -1,0 +1,23 @@
+{
+  "name": "electrobun-test-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "E2E test harness for electrobun-plugin v0.2.0 MCP server. Exercises all 16 tools against a real running electrobun app (Tier 1 CDP + Tier 2 bridge).",
+  "scripts": {
+    "start": "electrobun dev",
+    "build": "electrobun build",
+    "test:cdp": "bun e2e/test-cdp.ts",
+    "test:bridge": "bun e2e/test-bridge.ts",
+    "test:all": "bun e2e/run-all.ts",
+    "test:live": "bun e2e/test-live-app.ts"
+  },
+  "dependencies": {
+    "electrobun": "1.18.4-beta.3",
+    "electrobun-devtools": "0.2.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.9.3"
+  }
+}

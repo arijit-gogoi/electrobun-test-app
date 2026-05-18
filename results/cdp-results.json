@@ -1,0 +1,107 @@
+{
+  "when": "2026-05-18T07:20:29.974Z",
+  "passed": 9,
+  "total": 9,
+  "results": [
+    {
+      "tool": "electrobun_list_views",
+      "pass": true,
+      "reason": "found 1 view(s); page id=EAEA99023FF6AFC42B8C426382321DFB",
+      "detail": {
+        "count": 1,
+        "id": "EAEA99023FF6AFC42B8C426382321DFB",
+        "title": "",
+        "url": "data:text/html,<!doctype html><html><head><title>E2E%20test%20page</title></head"
+      },
+      "durationMs": 1
+    },
+    {
+      "tool": "electrobun_eval",
+      "pass": true,
+      "reason": "got type=number value=3",
+      "detail": {
+        "type": "number",
+        "value": 3,
+        "description": "3"
+      },
+      "durationMs": 9
+    },
+    {
+      "tool": "electrobun_navigate",
+      "pass": true,
+      "reason": "frameId=EAEA99023FF6AFC42B8C426382321DFB",
+      "detail": {
+        "frameId": "EAEA99023FF6AFC42B8C426382321DFB",
+        "loaderId": "227A83E88DCE12907B1DBABE3362A021",
+        "isDownload": false
+      },
+      "durationMs": 18
+    },
+    {
+      "tool": "electrobun_reload",
+      "pass": true,
+      "detail": {
+        "ok": true
+      },
+      "durationMs": 12
+    },
+    {
+      "tool": "electrobun_screenshot",
+      "pass": true,
+      "reason": "type=image mime=image/png dataLen=3592",
+      "detail": {
+        "type": "image",
+        "mimeType": "image/png",
+        "dataLen": 3592
+      },
+      "durationMs": 37
+    },
+    {
+      "tool": "electrobun_dom",
+      "pass": true,
+      "reason": "html length 69",
+      "detail": {
+        "length": 69,
+        "snippet": "<html><head><title>navigated</title></head><body>nav-ok</body></html>"
+      },
+      "durationMs": 6
+    },
+    {
+      "tool": "electrobun_console",
+      "pass": true,
+      "reason": "0 messages captured (subscription is post-attach)",
+      "detail": {
+        "count": 0,
+        "sample": []
+      },
+      "durationMs": 5
+    },
+    {
+      "tool": "electrobun_network",
+      "pass": true,
+      "reason": "1 entries; example.com seen: true",
+      "detail": {
+        "count": 1,
+        "sample": [
+          {
+            "requestId": "7112.3",
+            "ts": 1779088827332,
+            "method": "GET",
+            "url": "https://example.com/"
+          }
+        ]
+      },
+      "durationMs": 2097
+    },
+    {
+      "tool": "electrobun_devtools",
+      "pass": true,
+      "reason": "url=https://chrome-devtools-frontend.appspot.com/serve_rev/@022a5605792996d967e05acd",
+      "detail": {
+        "url": "https://chrome-devtools-frontend.appspot.com/serve_rev/@022a5605792996d967e05acda7091c2bd9b915db/inspector.html?ws=localhost:9222/devtools/page/EAEA99023FF6AFC42B8C426382321DFB",
+        "hint": "Open this URL in your default browser to see Chrome DevTools attached to the live webview."
+      },
+      "durationMs": 3
+    }
+  ]
+}

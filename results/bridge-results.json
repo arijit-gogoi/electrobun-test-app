@@ -1,0 +1,134 @@
+{
+  "when": "2026-05-18T07:20:30.476Z",
+  "passed": 8,
+  "total": 8,
+  "results": [
+    {
+      "tool": "electrobun_list_windows",
+      "pass": true,
+      "reason": "1 window(s); titles: Main",
+      "detail": {
+        "windows": [
+          {
+            "id": 1,
+            "title": "Main",
+            "url": "views://main/index.html"
+          }
+        ]
+      },
+      "durationMs": 12
+    },
+    {
+      "tool": "electrobun_rpc_log",
+      "pass": true,
+      "reason": "2 entries; getTitle seen: true",
+      "detail": {
+        "entries": [
+          {
+            "ts": 1779088829088,
+            "direction": "view→bun",
+            "kind": "request",
+            "method": "getTitle",
+            "payload": {}
+          },
+          {
+            "ts": 1779088829588,
+            "direction": "bun→view",
+            "kind": "response",
+            "method": "getTitle",
+            "payload": "My App"
+          }
+        ]
+      },
+      "durationMs": 5
+    },
+    {
+      "tool": "electrobun_ffi_log",
+      "pass": true,
+      "reason": "1 entries; createWindow seen: true",
+      "detail": {
+        "entries": [
+          {
+            "ts": 1779088829288,
+            "ns": "request",
+            "symbol": "createWindow",
+            "args": [
+              {
+                "width": 800
+              }
+            ],
+            "result": {
+              "id": 1
+            },
+            "durationMs": 5
+          }
+        ]
+      },
+      "durationMs": 2
+    },
+    {
+      "tool": "electrobun_bun_eval (allowEval=true)",
+      "pass": true,
+      "reason": "result=42, type=number",
+      "detail": {
+        "result": 42,
+        "type": "number"
+      },
+      "durationMs": 2
+    },
+    {
+      "tool": "electrobun_updater_state",
+      "pass": true,
+      "reason": "version=0.1.0, channel=stable",
+      "detail": {
+        "state": {
+          "currentVersion": "0.1.0",
+          "channel": "stable",
+          "isChecking": false
+        }
+      },
+      "durationMs": 5
+    },
+    {
+      "tool": "electrobun_app_log",
+      "pass": true,
+      "reason": "2 entries; warn seen: true",
+      "detail": {
+        "entries": [
+          {
+            "ts": 1779088829488,
+            "level": "log",
+            "message": "app started"
+          },
+          {
+            "ts": 1779088829788,
+            "level": "warn",
+            "message": "deprecation warning"
+          }
+        ]
+      },
+      "durationMs": 6
+    },
+    {
+      "tool": "electrobun_native_log (Windows)",
+      "pass": true,
+      "reason": "platform=windows, entries=0, warning=stub",
+      "detail": {
+        "entries": [],
+        "platform": "windows",
+        "warning": "stub"
+      },
+      "durationMs": 2
+    },
+    {
+      "tool": "electrobun_bun_eval (allowEval=false refuses)",
+      "pass": true,
+      "reason": "isError=true; text contains 'alloweval': true",
+      "detail": {
+        "isError": true,
+        "text": "[auth] bun_eval refused: allowEval is off. Set `allowEval: true` in the plugin user config to enable code execution in the main process. High blast radius — only enable for trusted sessions."
+      },
+      "durationMs": 6
+    }
+  ]
+}
