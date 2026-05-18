@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "electrobun": "1.18.4-beta.3",
-    "electrobun-devtools": "0.2.0"
+    "electrobun-devtools": "0.2.3"
   },
   "devDependencies": {
     "@types/bun": "latest",

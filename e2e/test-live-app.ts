@@ -18,16 +18,18 @@ import { resolve } from "node:path";
 import { McpHarness, MCP_ENTRY, run, type TestResult } from "./harness.ts";
 
 const APP_ROOT = resolve(import.meta.dir, "..");
-const TOKEN_FILE = resolve(APP_ROOT, ".electrobun-devtools-token");
+// Token file is written by devtools.start() into the launcher's cwd, which is
+// the `bin/` dir of the built app (not APP_ROOT).
+const TOKEN_FILE = resolve(APP_ROOT, "build/dev-win-x64/electrobun-test-app-dev/bin/.electrobun-devtools-token");
 
 function findArtifactExe(): string | null {
   // electrobun build produces `artifacts/{Name}.app` on mac, .exe on win.
   // Hunt for the launcher binary.
   const candidates = [
-    resolve(APP_ROOT, "artifacts/win/electrobun-test-app/electrobun-test-app.exe"),
-    resolve(APP_ROOT, "artifacts/win-x64/electrobun-test-app/electrobun-test-app.exe"),
+    resolve(APP_ROOT, "build/dev-win-x64/electrobun-test-app-dev/bin/launcher.exe"),
+    resolve(APP_ROOT, "build/canary-win-x64/electrobun-test-app-canary/bin/launcher.exe"),
+    resolve(APP_ROOT, "build/stable-win-x64/electrobun-test-app/bin/launcher.exe"),
     resolve(APP_ROOT, "artifacts/win-x64/launcher.exe"),
-    resolve(APP_ROOT, "artifacts/launcher.exe"),
   ];
   for (const c of candidates) if (existsSync(c)) return c;
   return null;
@@ -44,8 +46,10 @@ function startApp(): Promise<{ port: number; token: string }> {
   }
   console.error(`Launching ${exe}`);
 
-  // Remove stale token so devtools rotates it
-  if (existsSync(TOKEN_FILE)) rmSync(TOKEN_FILE);
+  // Token is rotated on each spawn by devtools — captured via stdout match
+  // below. Persistent file lives in launcher cwd (not APP_ROOT) so we don't
+  // touch it here.
+  void TOKEN_FILE;
 
   appProc = spawn(exe, [], {
     cwd: APP_ROOT,
@@ -67,8 +71,12 @@ function startApp(): Promise<{ port: number; token: string }> {
     while (Date.now() - start < 60_000) {
       try {
         const r = await fetch("http://localhost:9222/json/version");
-        if (r.ok && existsSync(TOKEN_FILE)) {
-          const t = token || readFileSync(TOKEN_FILE, "utf8").trim();
+        if (r.ok) {
+          // Prefer token from stdout match (fresh); fall back to file (persistent).
+          let t = token;
+          if (!t && existsSync(TOKEN_FILE)) {
+            t = readFileSync(TOKEN_FILE, "utf8").trim();
+          }
           if (t) return res({ port: 9876, token: t });
         }
       } catch {}
@@ -198,6 +206,22 @@ async function main(): Promise<void> {
       }),
     );
 
+    // Reload BEFORE navigate — navigate to a data: URL detaches the page
+    // session and subsequent CDP commands on that target may fail.
+    results.push(
+      await run("electrobun_reload (real)", async () => {
+        const r = await mcp.callTool("electrobun_reload", { viewId });
+        if (r.isError) {
+          return { pass: false, reason: `MCP returned isError; text=${r.content?.[0]?.text?.slice(0, 200)}` };
+        }
+        const parsed = JSON.parse(r.content?.[0]?.text ?? "{}") as { ok?: boolean };
+        return { pass: parsed.ok === true };
+      }),
+    );
+
+    // Wait for reload to complete before navigating away
+    await new Promise((r) => setTimeout(r, 1000));
+
     results.push(
       await run("electrobun_navigate (real)", async () => {
         const r = await mcp.callTool("electrobun_navigate", {
@@ -206,14 +230,6 @@ async function main(): Promise<void> {
         });
         const parsed = JSON.parse(r.content?.[0]?.text ?? "{}") as { frameId?: string };
         return { pass: !!parsed.frameId, reason: `frameId=${parsed.frameId}` };
-      }),
-    );
-
-    results.push(
-      await run("electrobun_reload (real)", async () => {
-        const r = await mcp.callTool("electrobun_reload", { viewId });
-        const parsed = JSON.parse(r.content?.[0]?.text ?? "{}") as { ok?: boolean };
-        return { pass: parsed.ok === true };
       }),
     );
 

@@ -5,6 +5,13 @@
 import { BrowserWindow, BrowserView } from "electrobun/bun";
 import { devtools } from "electrobun-devtools";
 
+// Note: electrobun's package.json `exports` field restricts deep imports.
+// Cannot reach `electrobun/dist/api/bun/proc/native` or `core/BrowserWindow`
+// from user code. We rely on the BrowserView.defineRPC static + constructor
+// wrap in the devtools windows hook. FFI logging not available in v0.2.x for
+// bundled apps until upstream electrobun exposes ffi (or BrowserWindowMap)
+// via the exports field. Tracked in roadmap.
+
 // Shared RPC type — used by both sides
 type AppRPC = {
   bun: {
@@ -23,9 +30,14 @@ type AppRPC = {
 };
 
 // Start devtools BEFORE creating BrowserWindow so hooks intercept everything.
+// Pass electrobun symbols explicitly — required because the bundler inlines
+// electrobun so runtime import("electrobun/...") cannot reach internals.
 // Token will print + persist to .electrobun-devtools-token in cwd.
 if (process.env.NODE_ENV !== "production") {
-  await devtools.start({ port: 9876 });
+  await devtools.start({
+    port: 9876,
+    electrobun: { BrowserView, BrowserWindow },
+  });
   console.log("[test-app] devtools server started");
 }
 
@@ -51,6 +63,9 @@ const win = new BrowserWindow({
     },
   }),
 });
+
+// Tell devtools about this window so list_windows can see it.
+devtools.trackWindow(win as { id?: number; title?: string });
 
 console.log("[test-app] window created");
 

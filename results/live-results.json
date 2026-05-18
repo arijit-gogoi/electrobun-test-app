@@ -1,0 +1,116 @@
+{
+  "when": "2026-05-18T08:19:11.883Z",
+  "passed": 15,
+  "total": 16,
+  "results": [
+    {
+      "tool": "electrobun_list_views (real CEF)",
+      "pass": true,
+      "reason": "1 view(s); page id=1799EFC05250A2B1",
+      "detail": {
+        "views": [
+          {
+            "id": "1799EFC05250A2B154B71EA767DC502F",
+            "title": "E2E test page",
+            "url": "views://mainview/index.html",
+            "type": "page"
+          }
+        ]
+      },
+      "durationMs": 22
+    },
+    {
+      "tool": "electrobun_eval (real)",
+      "pass": true,
+      "reason": "got value=\"hello electrobun\"",
+      "detail": {
+        "type": "string",
+        "value": "hello electrobun"
+      },
+      "durationMs": 21
+    },
+    {
+      "tool": "electrobun_dom (real)",
+      "pass": true,
+      "reason": "html length 27453",
+      "durationMs": 17
+    },
+    {
+      "tool": "electrobun_screenshot (real)",
+      "pass": true,
+      "reason": "mime=image/png dataLen=8424",
+      "durationMs": 175
+    },
+    {
+      "tool": "electrobun_console (real)",
+      "pass": true,
+      "reason": "1 messages, target seen: true",
+      "durationMs": 1023
+    },
+    {
+      "tool": "electrobun_network (real)",
+      "pass": true,
+      "reason": "1 entries; live-e2e seen: true",
+      "durationMs": 2106
+    },
+    {
+      "tool": "electrobun_reload (real)",
+      "pass": true,
+      "durationMs": 14
+    },
+    {
+      "tool": "electrobun_navigate (real)",
+      "pass": true,
+      "reason": "frameId=1799EFC05250A2B154B71EA767DC502F",
+      "durationMs": 32
+    },
+    {
+      "tool": "electrobun_devtools (real)",
+      "pass": true,
+      "reason": "url present: true",
+      "durationMs": 7
+    },
+    {
+      "tool": "electrobun_list_windows (real)",
+      "pass": true,
+      "reason": "1 window(s)",
+      "durationMs": 7
+    },
+    {
+      "tool": "electrobun_rpc_log (real)",
+      "pass": true,
+      "reason": "10 entries; add/readSecret seen: true",
+      "durationMs": 4
+    },
+    {
+      "tool": "electrobun_ffi_log (real)",
+      "pass": false,
+      "reason": "0 entries",
+      "durationMs": 3
+    },
+    {
+      "tool": "electrobun_bun_eval (real, allowEval=true)",
+      "pass": true,
+      "reason": "result=\"win32\"",
+      "durationMs": 8
+    },
+    {
+      "tool": "electrobun_updater_state (real)",
+      "pass": true,
+      "reason": "state present: true",
+      "durationMs": 3
+    },
+    {
+      "tool": "electrobun_app_log (real)",
+      "pass": true,
+      "reason": "11 entries; boot log seen: true",
+      "durationMs": 4
+    },
+    {
+      "tool": "electrobun_native_log (real, Windows)",
+      "pass": true,
+      "reason": "platform=windows",
+      "durationMs": 627
+    }
+  ]
+}
